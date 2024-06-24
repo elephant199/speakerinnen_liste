@@ -3,11 +3,15 @@
   <head>
     <meta charset='UTF-8'>
     <meta http-equiv='X-UA-Compatible', content='IE=edge'>
+    <meta name="google-site-verification" content="paCa9oDcPMpy2EWdgQVVAPu1ipGyjb74_-ha1ZyffpQ" />
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <meta property="og:image" content="https://speakerinnen.org/assets/curie-98b360602abd80292d1a664d16ae60fb.jpg"/>
+    <meta property="og:image" content ="<%= asset_url 'header_0.png' %>"/>
+    <meta property="og:image" content="<%= asset_url 'header_2.png' %>"/>
+    <meta property="og:image" content="<%= asset_url 'header_3.png' %>"/>
+    <meta property="og:image" content="<%= asset_url 'header_4.png' %>"/>
     <meta property="og:title" content="SpeakerinnenListe" />
     <meta property="og:url" content="http://speakerinnen.org" />
-    <meta property="og:description" content="Die Speakerinnen-Liste hat das Ziel, die Sichtbarkeit von Frauen* bei Konferenzen, Panels, Talkshows und überall da zu erhöhen, wo öffentlich gesprochen wird." />
+    <meta property="og:description" content="Die Speakerinnen-Liste hat das Ziel, die Sichtbarkeit von Frauen bei Konferenzen, Panels, Talkshows und überall da zu erhöhen, wo öffentlich gesprochen wird." />
     <title><%= t '.title' %></title>
     <%= stylesheet_link_tag    'application', media: 'all' %>
     <%= javascript_include_tag 'application' %>
@@ -16,31 +20,22 @@
     <%= csrf_meta_tags %>
     <%= favicon_link_tag 'favicon.ico' %>
   </head>
-  <body>
+  <body class="<%= current_region %>">
+    <a id="top" style="display: none;"></a>
     <%= render 'layouts/header' %>
     <%= render 'shared/flash', flash: flash %>
     <%= render 'shared/cookie_consent' %>
     <%= render 'shared/contact_hint_modal' %>
     <%= render 'shared/auth_hint_modal' %>
     <%= yield %>
-    <%= render 'layouts/footer' if render_footer? %>
+    <%= render "layouts/footer#{'_' + current_region.to_s if current_region}" if render_footer? %>
 
-    <!-- Piwik -->
-    <% if cookies[:cookie_consent] == 'true' %>
-      <script type="text/javascript">
-        var _paq = _paq || [];
-        _paq.push(['trackPageView']);
-        _paq.push(['enableLinkTracking']);
-        (function() {
-          var u="//tyranja.cassiopeia.uberspace.de/piwik/";
-          _paq.push(['setTrackerUrl', u+'piwik.php']);
-          _paq.push(['setSiteId', 1]);
-          var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-          g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
-        })();
-      </script>
-      <noscript><p><img src="//tyranja.cassiopeia.uberspace.de/piwik/piwik.php?idsite=1" style="border:0;" alt="" /></p></noscript>
-    <% end %>
-    <!-- End Piwik Code -->
+    <script>
+      window.setTimeout(function() {
+        $(".alert-dismissible").slideUp(900, function(){
+            $(this).remove();
+        });
+      }, 8000);
+    </script>
   </body>
 </html>

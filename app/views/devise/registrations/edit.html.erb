@@ -1,11 +1,7 @@
 <div class="container py-5">
   <%= render 'shared/error_messages' %>
-  <div class="text-left mb-5">
-    <%= link_to(t(:home, scope: 'profiles.edit'), profiles_path) %><br>
-    <%# link_to(t(:show, scope: 'profiles.edit'), profile_path) %>
-  </div>
 
-  <h1 class="mb-5">
+  <h1 class="my-5">
     <%= t(:account_from, scope: "devise.registrations.edit") %> <%= @profile.fullname %>:
   </h1>
 
@@ -38,7 +34,7 @@
 
       <%= button_to t(:update, scope: "devise.registrations.edit"),
       registration_path(resource_name), data: { confirm: t(:sure, scope: "devise.registrations.edit") },
-      method: :put, class:"btn btn-blue mt-3" %>
+      method: :put, class:"btn btn-primary mt-3" %>
 
     </div>
   <% end %>
@@ -50,7 +46,7 @@
 
       <div class="p-3 mb-5 bg--white">
 
-        <p><b><%= t(:password_change, scope: "devise.registrations.edit") %></b></p>
+        <h4><%= t(:password_change, scope: "devise.registrations.edit") %></h4>
 
         <%= f.input :current_password, placeholder: t(:password_current_placeholder,
           scope: "devise.registrations.edit"),
@@ -67,16 +63,37 @@
 
         <%= button_to t(:update, scope: "devise.registrations.edit"),
         registration_path(resource_name), data: { confirm: t(:sure, scope: "devise.registrations.edit") },
-        method: :put, class:"btn btn-blue" %>
+        method: :put, class:"btn btn-primary" %>
 
       </div>
     <% end %>
   <% end %>
 
+  <div class="p-3 mb-5 bg--white">
+    <% if @profile.inactive? %>
+      <h4><%= t(:set_active, scope: "devise.registrations.edit") %></h4>
+    <% else %>
+      <h4><%= t(:set_inactive, scope: "devise.registrations.edit") %></h4>
+    <% end %>
+    <%= simple_form_for(@profile, html: { multipart: true } ) do |f| %>
+      <div class="mt-5">
+        <%= f.radio_button :inactive, false, class: "", id: "" %>
+        <%= f.label :inactive, t(:active_label ,scope: "devise.registrations.edit").html_safe %>
+      </div>
+      <div>
+        <%= f.radio_button :inactive, true, class: "", id: "" %>
+        <%= f.label :incative, t(:inactive_label, scope: "devise.registrations.edit").html_safe %>
+      </div>
+      <br>
+      <%= f.button :submit, t(:update, scope: 'profiles.form').html_safe, class:'btn btn-primary' %>
+    <% end %>
+  </div>
+  <a id="inactive_anchor"></a>
+
   <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name),
     html: { method: :put }) do |f| %>
 
-    <div class="p-3 mb-5 bg--white">
+    <div class="p-3 my-5 alert-warning">
 
       <p><b><%= t(:delete_account, scope: "devise.registrations.edit") %></b></p>
       <p><%= t(:unhappy, scope: "devise.registrations.edit") %></p>
@@ -87,5 +104,6 @@
 
     </div>
   <% end %>
+  <%= link_to(t(:show, scope: 'profiles.edit').html_safe, @profile, class: 'btn btn-outline-primary mt-3' ) %>
 
 </div>

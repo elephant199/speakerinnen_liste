@@ -25,9 +25,6 @@ de:
         subject: 'Anleitung, um Deinen Account freizuschalten'
       published:
         subject: "Dein Profil auf Speakerinnen.org wurde jetzt freigeschaltet."
-    omniauth_callbacks:
-      success: 'Du hast Dich erfolgreich mit Deinem %{kind}-Account angemeldet.'
-      failure: 'Du konntest nicht mit Deinem %{kind}-Account angemeldet werden, weil "%{reason}".'
     passwords:
       no_token: "Du kannst diese Seite nur von dem Link aus einer E-Mail zum Passwort-Zurücksetzen aufrufen. Wenn Du einen solchen Link aufgerufen hast, stelle bitte sicher, dass Du die vollständige Adresse aufrufst."
       send_instructions: 'Du erhältst in wenigen Minuten eine E-Mail mit der Anleitung, wie Du Dein Passwort zurücksetzen kannst.'
@@ -51,8 +48,6 @@ de:
       confirmation: "Bestätige Dein Passwort"
       signup: "Registrieren"
       signin: "Anmelden"
-      signup_via: "Über Twitter registrieren"
-      signin_via: "Über Twitter anmelden"
       no_confirmation: "Keine Bestätigungsmail erhalten?"
       forgot_password: "Passwort vergessen?"
       remember: "Angemeldet bleiben"
@@ -61,16 +56,15 @@ de:
       resend_instructions: "Bestätigungsmail schicken"
       edit:
         account_from: "Account von "
-        change_email: "<b>Hier kannst Du Deine Email Adresse ändern.</b>
-        <br> Gebe die neue Email Adresse ein und Dein aktuelles Passwort."
+        change_email: "<h4>Hier kannst Du Deine Email Adresse ändern</h4>
+        <br> Gib die neue Email Adresse ein und Dein aktuelles Passwort."
         password_current: "Aktuelles Passwort:"
         password_current_placeholder: "Aktuelles Passwort"
-        password_change: "Hier kannst Du Dein Passwort ändern."
+        password_change: "Hier kannst Du Dein Passwort ändern"
         password_blank: "Bitte leer lassen, wenn das Passwort nicht geändert werden soll."
         password_placeholder: "Passwort"
         password: "Passwort:
         <br><small class='form-text text-muted'>Wir brauchen dein Passwort, um deine E-Mail Adresse ändern zu können.</small>"
-        no_password: "Du kannst deine E-Mail-Adresse hier nicht ändern, weil du über Twitter eingeloggt bist und die dortige E-Mail benutzt wird."
         update: "Aktualisiere Account"
         delete_account: "Hier kannst Du Deinen Account löschen!"
         unhappy: "Unglücklich?"
@@ -82,6 +76,10 @@ de:
         email: "E-Mail:
           <br><small class='form-text text-muted'>Deine E-Mailadresse wird nirgendwo veröffentlicht, sondern nur dazu genutzt,
           dass Interessentinnen und Interessenten Kontakt zu Dir aufnehmen können.</small>"
+        set_inactive: "Deaktiviere Deinen Account"
+        set_active: "Aktiviere Deinen Account"
+        active_label: "Dein Profil ist <b>aktiv</b>. Das heißt, Du bist sichtbar auf unserer Webseite und kannst kontaktiert werden."
+        inactive_label: "Dein Profil ist <b>nicht aktiv</b>. Das heißt, Du bist sichtbar auf unserer Webseite, kannst aber <b>nicht kontaktiert</b> werden."
       new:
         sign_up: "Registrieren"
         password: "Passwort"

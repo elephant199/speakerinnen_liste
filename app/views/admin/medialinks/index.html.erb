@@ -2,8 +2,8 @@
   <h1>Admin::Medialinks</h1>
 
   <div class="my-3 py-3 border-vertical">
-    <%= link_to t(:show_all, scope: 'admin.profiles.edit'), admin_profiles_path, class:'btn btn-blue btn-sm' %>
-    <%= link_to t(:show, scope: 'admin.profiles.edit'), admin_profile_path(@profile), class:'btn btn-blue btn-sm' %>
+    <%= link_to t(:show_all, scope: 'admin.profiles.edit'), admin_profiles_path, class: 'btn btn-primary btn-sm' %>
+    <%= link_to t(:show, scope: 'admin.profiles.edit'), admin_profile_path(@profile), class: 'btn btn-primary btn-sm' %>
     <% if @profile.published %>
       <%= link_to t(:make_invisible, scope: 'admin.profiles'), unpublish_admin_profile_path(@profile.id),
       method: :post, class:'btn btn-sm btn-danger', title: 'Hier kannst Du das Profile wieder unsichtbar machen.' %>
@@ -27,26 +27,6 @@
   <p id="medialinks__list--sort-message"></p>
 
   <ul id="medialinks__list" data-update-url="<%= sort_admin_profile_medialinks_url%>" class="<%= t(:language_short, scope: 'medialinks')%>">
-    <% @medialinks.each do |medialink| %>
-      <%= content_tag_for(:li, medialink, nil, {'title' => t(:tooltip, scope: 'medialinks')}) do %>
-        <% if medialink.url =~ /youtube|vimeo/i %>
-          <b><%= medialink.title %></b>
-          <%= medialink.url_html if medialink.url != 'http://' %>
-        <% else %>
-          <%= link_to medialink.title, medialink.url %>
-        <% end %>
-        <%= simple_format(medialink.description) %>
-        <span class="color-grey">
-          <%= t(:select_language, scope: 'medialinks') + t("#{medialink.language}", scope: 'iso_639_1').capitalize if medialink.language.present? %>
-        </span>
-        <hr>
-
-        <%= link_to '<i class="fa fa-pencil"></i>'.html_safe+ t(:edit_link, scope: 'medialinks'),
-            edit_admin_profile_medialink_path(@profile, medialink) %>
-        <%= link_to '<i class="fa fa-minus-circle"></i>'.html_safe+ t(:delete_link, scope: 'medialinks'),
-            admin_profile_medialink_path(@profile, medialink),
-            method: :delete, data: { confirm: 'Are you sure?'}, title: t(:delete, scope: "medialinks") %>
-      <% end %>
-    <% end %>
+    <%= render partial: 'medialinks/medialink', collection: @medialinks %>
   </ul>
 </div>

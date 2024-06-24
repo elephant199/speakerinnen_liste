@@ -13,27 +13,19 @@ class ProfilesController < ApplicationController
   respond_to :json
 
   def index
-    if params[:topic]
-      @profiles = profiles_for_tag(params[:topic])
+    if params[:search]
+      search_with_search_params
     elsif params[:category_id]
-      profiles_for_category
-    elsif params[:search]
-      @profiles = profiles_for_search
-
-      # sum of search results concerning certain attributes
-      @aggs = profiles_for_search.response.aggregations
-      @aggs_languages = @aggs[:lang][:buckets]
-      @aggs_cities = @aggs[:city][:buckets]
-      @aggs_countries = @aggs[:country][:buckets]
+      search_with_category_id
+    elsif params[:tag_filter]
+      if params[:tag_filter].empty?
+        redirect_to profiles_url(anchor: "top"), notice: I18n.t('flash.profiles.no_tags_selected')
+        return
+      end
+      search_with_tags
     else
-      @profiles = profiles_for_index
-      @profiles_count = Profile.is_published.size
+      search_without_params
     end
-    @tags_most_used_200 = if params[:all_lang]
-                            ActsAsTaggableOn::Tag.with_published_profile.most_used(200)
-                          else
-                            ActsAsTaggableOn::Tag.with_published_profile.with_language(I18n.locale).most_used(200)
-                          end
   end
 
   def show
@@ -51,7 +43,7 @@ class ProfilesController < ApplicationController
   end
 
   def update
-    if @profile.update_attributes(profile_params)
+    if @profile.update(profile_params)
       redirect_to @profile, notice: I18n.t('flash.profiles.updated', profile_name: @profile.name_or_email)
     elsif current_profile
       build_missing_translations(@profile)
@@ -71,51 +63,19 @@ class ProfilesController < ApplicationController
   end
 
   def render_footer?
-    false
+    true
   end
 
   def typeahead
-    suggester_fields  = []
-    suggester_options = []
-    suggestions = Profile.typeahead(params[:q])
-                         .select { |key, _value| key.to_s.match(/.*_suggest/) }
-    suggestions.each do |s|
-      suggester_fields.push(s)
+    suggestions = Profile.typeahead(params[:q], region: current_region)
+    suggestions_array = suggestions.map do |suggestion|
+      {'text': suggestion.titleize}
     end
-    suggester_fields.map { |s| suggester_options.push(s[1].first['options']) }
-    suggestions_ordered = suggestions_upcase(suggester_options)
-    respond_with(suggestions_ordered)
+    suggestions_array.push('_source': {})
+    respond_with(suggestions_array)
   end
 
   private
-
-  def suggestions_upcase(suggestions_raw)
-    sugg_upcase_complete = []
-    sugg_text = []
-    suggestions_raw.flatten.sort_by { |s| s['score'] }
-
-    sugg_upcase_complete = suggestions_raw.flatten.each do |s|
-      s['text'] = s['text'].split.map(&:capitalize).join(' ')
-      sugg_text.push(s['text'])
-    end
-
-    duplicates = sugg_text.select { |element| sugg_text.count(element) > 1 }
-    delete_duplicates(sugg_upcase_complete, duplicates)
-  end
-
-  def delete_duplicates(upcased_suggestions, dupli)
-    if dupli != []
-      dupli.uniq!.each do |x|
-        upcased_suggestions.find do |s|
-          if x == s['text']
-            upcased_suggestions.delete(s)
-            dupli.delete(x)
-          end
-        end
-      end
-    end
-    upcased_suggestions
-  end
 
   # Use callbacks to share common setup or constraints between actions.
   def set_profile
@@ -130,6 +90,7 @@ class ProfilesController < ApplicationController
       :password_confirmation,
       :remember_me,
       :country,
+      :state,
       { iso_languages: [] },
       :firstname,
       :lastname,
@@ -156,57 +117,127 @@ class ProfilesController < ApplicationController
       :city_de,
       :city_en,
       :image,
+      :copyright,
+      :personal_note_de,
+      :personal_note_en,
+      :willing_to_travel,
+      :nonprofit,
+      :inactive,
       feature_ids: [],
+      service_ids: [],
       translations_attributes: %i[id bio main_topic twitter website profession city locale]
     )
   end
 
-  def custom_params
-    permitted = Profile.globalize_attribute_names
-    params[:profile].permit(*permitted)
+  def search_with_search_params
+    @profiles = matching_profiles.map(&:profile_card_details)
+    @pagy, @records = pagy_array(@profiles)
+    # search results aggregated according to certain attributes to display as filters
+    aggs = ProfileGrouper.new(params[:locale], @profiles.map { |profile| profile[:id] }).agg_hash
+    @aggs_languages = aggs[:languages]
+    @aggs_cities = aggs[:cities]
+    @aggs_states = aggs[:states]
+    @aggs_countries = aggs[:countries]
   end
 
-  def profiles_for_index
-    Profile.is_published
-           .includes(:translations)
-           .main_topic_translated_in(I18n.locale)
-           .random
-           .page(params[:page])
-           .per(24)
+  def matching_profiles
+    chain ||= Profile
+      .includes(:translations)
+      .with_attached_image
+      .is_published
+      .by_region(current_region)
+      .search(params[:search])
+
+    if params[:filter_city]
+      chain = chain.by_city(params[:filter_city])
+    end
+
+    if params[:filter_country]
+      chain = chain.by_country(params[:filter_country])
+    end
+
+    if params[:filter_language]
+      chain = chain.by_language(params[:filter_language])
+    end
+
+    if params[:filter_state]
+      chain = chain.by_state(params[:filter_state])
+    end
+
+    @matching_profiles = chain
   end
 
-  def profiles_for_tag(tag_names)
-    # uniq turn the relation into a array and to paginate the array we
-    # need the Kaminari.paginate_array method
-    profiles_array = Profile.is_published
-                             .includes(:taggings, :translations)
-                             .joins(:topics)
-                             .where(
-                               tags: {
-                                 name: tag_names
-                               }
-                             )
-                             .random
-                             .uniq
-
-    Kaminari.paginate_array(profiles_array).page(params[:page]).per(24)
+  def search_with_category_id
+    @profiles = profiles_for_category
+    @category = Category.find(params[:category_id])
+    build_categories_and_tags_for_tags_filter
   end
 
   def profiles_for_category
-    @category = Category.find(params[:category_id])
-    @tags_in_category_published = ActsAsTaggableOn::Tag
-                                  .belongs_to_category(params[:category_id])
-                                  .translated_in_current_language_and_not_translated(I18n.locale)
-    tag_names = @tags_in_category_published.pluck(:name)
-    @tags_most_used_200_in_category = @tags_in_category_published.most_used(200)
-    @profiles = profiles_for_tag(tag_names)
+    tag_names =
+      ActsAsTaggableOn::Tag
+      .with_published_profile
+      .belongs_to_category(params[:category_id])
+      .translated_in_current_language_and_not_translated(I18n.locale)
+      .pluck(:name)
+
+    @pagy, @records = pagy(
+      Profile
+        .with_attached_image
+        .is_published
+        .by_region(current_region)
+        .includes(:topics)
+        .where(tags: { name: tag_names })
+      )
   end
 
-  def profiles_for_search
-    Profile.is_published
-           .includes(:taggings, :translations)
-           .search(params[:search], params[:filter_countries], params[:filter_cities], params[:filter_lang])
-           .page(params[:page]).per(24)
-           .records
+  def search_with_tags
+    @tags = params[:tag_filter].split(/\s*,\s*/)
+    last_tag = @tags.last
+    last_tag_id = ActsAsTaggableOn::Tag.where(name: last_tag).last.id
+    @profiles = profiles_with_tags(@tags)
+    @category =  Category.select{|cat| cat.tag_ids.include?(last_tag_id)}.last
+    build_categories_and_tags_for_tags_filter
+  end
+
+  def profiles_with_tags(tags)
+    @pagy, @records = pagy(
+      Profile
+        .is_published
+        .by_region(current_region)
+        .has_tags(tags)
+      )
+  end
+
+  def search_without_params
+    @profiles = profiles_for_index
+    @category = Category.first
+    build_categories_and_tags_for_tags_filter
+  end
+
+  def profiles_for_index
+    @pagy, @records = pagy(
+      Profile
+        .with_attached_image
+        .is_published
+        .by_region(current_region)
+        .includes(:translations)
+        .main_topic_translated_in(I18n.locale)
+        .order(created_at: :desc)
+      )
+  end
+
+  def build_categories_and_tags_for_tags_filter
+    @categories = Category.sorted_categories
+    Category.all.includes(:translations).each do |category|
+      tags = ActsAsTaggableOn::Tag
+        .belongs_to_category(category.id)
+        .with_published_profile
+        .with_regional_profile(search_region)
+        .translated_in_current_language_and_not_translated(I18n.locale)
+      tags = tags.belongs_to_more_than_one_profile unless current_region
+      tags = tags.most_used(100)
+      instance_variable_set("@tags_#{category.short_name}", tags)
+    end
   end
 end

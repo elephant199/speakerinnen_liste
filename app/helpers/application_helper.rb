@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module ApplicationHelper
+  include Pagy::Frontend
+
   def devise_mapping
     Devise.mappings[:profile]
   end
@@ -37,7 +39,7 @@ module ApplicationHelper
       yield tag, classes[index.nan? ? 0 : index.round]
     end
   end
-  
+
   def bootstrap_class_for(flash_type)
     case flash_type
     when "success"
@@ -51,6 +53,10 @@ module ApplicationHelper
     else
       flash_type.to_s
     end
+  end
+
+  def url_with_protocol(url)
+    (url.start_with?("http://") || url.start_with?("https://")) ? url : 'https://' + url
   end
 
 end

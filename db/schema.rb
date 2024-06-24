@@ -2,15 +2,15 @@
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
 #
-# Note that this schema.rb definition is the authoritative source for your
-# database schema. If you need to create the application database on another
-# system, you should be using db:schema:load, not running all the migrations
-# from scratch. The latter is a flawed and unsustainable approach (the more migrations
-# you'll amass, the slower it'll run and the greater likelihood for issues).
+# This file is the source Rails uses to define your schema when running `bin/rails
+# db:schema:load`. When creating a new database, `bin/rails db:schema:load` tends to
+# be faster and is potentially less error prone than running all of your
+# migrations from scratch. Old migrations may fail to apply correctly if those
+# migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_30_04_111200) do
+ActiveRecord::Schema.define(version: 2023_10_28_163837) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,7 +33,14 @@ ActiveRecord::Schema.define(version: 2019_30_04_111200) do
     t.bigint "byte_size", null: false
     t.string "checksum", null: false
     t.datetime "created_at", null: false
+    t.string "service_name", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
+  end
+
+  create_table "active_storage_variant_records", force: :cascade do |t|
+    t.bigint "blob_id", null: false
+    t.string "variation_digest", null: false
+    t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
   create_table "api_tokens", id: :serial, force: :cascade do |t|
@@ -53,6 +60,7 @@ ActiveRecord::Schema.define(version: 2019_30_04_111200) do
     t.string "name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer "position", default: 0
   end
 
   create_table "categories_tags", id: :serial, force: :cascade do |t|
@@ -66,8 +74,8 @@ ActiveRecord::Schema.define(version: 2019_30_04_111200) do
   create_table "category_translations", force: :cascade do |t|
     t.integer "category_id", null: false
     t.string "locale", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
     t.string "name"
     t.index ["category_id"], name: "index_category_translations_on_category_id"
     t.index ["locale"], name: "index_category_translations_on_locale"
@@ -83,10 +91,10 @@ ActiveRecord::Schema.define(version: 2019_30_04_111200) do
   end
 
   create_table "feature_translations", force: :cascade do |t|
-    t.integer "feature_id", null: false
+    t.bigint "feature_id", null: false
     t.string "locale", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
     t.string "title"
     t.text "description"
     t.index ["feature_id"], name: "index_feature_translations_on_feature_id"
@@ -133,8 +141,8 @@ ActiveRecord::Schema.define(version: 2019_30_04_111200) do
   create_table "profile_translations", force: :cascade do |t|
     t.integer "profile_id", null: false
     t.string "locale", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
     t.string "main_topic"
     t.text "bio"
     t.string "twitter"
@@ -143,6 +151,7 @@ ActiveRecord::Schema.define(version: 2019_30_04_111200) do
     t.string "website_2"
     t.string "website_3"
     t.string "profession"
+    t.string "personal_note"
     t.index ["locale"], name: "index_profile_translations_on_locale"
     t.index ["profile_id"], name: "index_profile_translations_on_profile_id"
   end
@@ -175,10 +184,26 @@ ActiveRecord::Schema.define(version: 2019_30_04_111200) do
     t.string "slug"
     t.string "country"
     t.string "iso_languages"
+    t.string "copyright"
+    t.string "personal_note", limit: 175
+    t.boolean "willing_to_travel"
+    t.boolean "nonprofit"
+    t.boolean "inactive", default: false
+    t.string "state"
     t.index ["confirmation_token"], name: "index_profiles_on_confirmation_token", unique: true
     t.index ["email"], name: "index_profiles_on_email", unique: true
     t.index ["reset_password_token"], name: "index_profiles_on_reset_password_token", unique: true
     t.index ["slug"], name: "index_profiles_on_slug", unique: true
+  end
+
+  create_table "profiles_services", id: false, force: :cascade do |t|
+    t.bigint "service_id", null: false
+    t.bigint "profile_id", null: false
+    t.index ["service_id", "profile_id"], name: "index_profiles_services_on_service_id_and_profile_id"
+  end
+
+  create_table "services", force: :cascade do |t|
+    t.string "name"
   end
 
   create_table "taggings", id: :serial, force: :cascade do |t|
@@ -214,6 +239,7 @@ ActiveRecord::Schema.define(version: 2019_30_04_111200) do
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "feature_profiles", "features"
   add_foreign_key "feature_profiles", "profiles"
 end

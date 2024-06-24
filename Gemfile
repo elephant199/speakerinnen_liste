@@ -1,32 +1,33 @@
 # frozen_string_literal: true
 
 source 'https://rubygems.org'
-ruby '2.6.5'
-gem 'rails', '5.2.2.1'
+ruby '3.1.1'
+gem 'rails', '6.1.7.6'
 
 # Needed for Javascript Runtime
 # gem 'therubyracer'
 gem 'mini_racer'
 
 # used in the rail 5.2 version
-gem 'bootsnap', '~> 1.3'
+gem 'bootsnap', '~> 1.4.2'
 
-gem 'faker', '1.9.1'
+# rexml gem is a bundled gem since Ruby 3.0.0.
+gem 'rexml', '~> 3.2.4'
+
+gem 'faker', '~> 3.1', '>= 3.1.1'
 gem 'normalize-rails'
 
 gem 'deadweight', require: 'deadweight/hijack/rails'
 
-gem 'kaminari'
+gem 'pagy'
 gem 'mime-types'
 
-gem 'acts-as-taggable-on', '~> 6.0'
-gem 'auto_html', '~>1.6.4'
+gem 'acts-as-taggable-on', '~> 9.0', '>= 9.0.1'
 gem 'devise', '~> 4.7'
 gem 'invisible_captcha'
-gem 'jquery-rails', '~> 4.3.1'
+gem 'jquery-rails', '~> 4.4.0'
 gem 'jquery-ui-rails', '~> 6.0.1'
 gem 'mini_magick', '~> 4.9.5'
-gem 'omniauth-twitter'
 gem 'pg', '~> 1.1.3'
 gem 'simple_form'
 
@@ -37,18 +38,16 @@ gem 'globalize-accessors'
 
 gem 'bootstrap', '~> 4.3.1'
 gem 'font-awesome-rails', '~> 4.7.0.3'
+gem 'bootstrap-icons-helper'
 
 gem 'friendly_id'
 
 gem 'active_model_serializers'
 
-gem 'elasticsearch-model', '~> 2.0'
-gem 'elasticsearch-rails', '~> 6.0'
 gem 'record_tag_helper', '~> 1.0'
 gem 'exception_notification'
-gem 'honeycomb-beeline'
 
-gem 'coffee-rails', '~> 4.2.2'
+gem 'coffee-rails', '~> 5.0.0'
 gem 'sassc-rails'
 
 gem 'uglifier', '>= 1.0.3'
@@ -62,10 +61,18 @@ gem 'aws-sdk-s3', require: false
 gem "sentry-raven"
 
 gem 'image_processing', '~> 1.2'
+gem 'rack-timeout'
+gem 'pg_search'
+
+gem 'crawler_detect'
+gem 'rack-attack'
+
+# downgrade gem to solve parsing error https://stackoverflow.com/questions/74725359/ruby-on-rails-legacy-application-update-generates-gem-psych-alias-error-psychb
+gem 'psych', '< 4.0'
 
 group :development do
   gem 'better_errors'
-  gem 'bullet', '~> 5.9.0'
+  gem 'bullet'
   gem 'derailed_benchmarks'
   gem 'letter_opener'
   gem 'stackprof'
@@ -73,18 +80,18 @@ end
 
 group :development, :test do
   gem 'byebug'
-  gem 'capybara', '~> 3.12.0'
+  gem 'capybara', '~> 3.38'
   gem 'guard'
   gem 'guard-rspec'
   gem 'pry'
-  gem 'rspec-rails', '~> 3.8.1'
+  gem 'rspec-rails'
   gem 'rubocop', '~> 0.62.0'
   gem 'selenium-webdriver', '3.141.0'
+  gem 'webrick', '~> 1.7'
 end
 
 group :test do
   gem 'database_cleaner', '~> 1.7.0'
-  gem 'elasticsearch-extensions', git: 'git://github.com/elasticsearch/elasticsearch-ruby.git', ref: '2.x'
   gem 'factory_bot_rails'
   gem 'minitest', '5.11.3' # remove this after upgrading rails from 5.0.0
   gem 'poltergeist', '1.18.1'

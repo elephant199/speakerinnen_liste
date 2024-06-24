@@ -1,27 +1,56 @@
-<section id="main-page-footer" class="py-5">
+<footer id="footer" class="pt-5">
   <div class="container">
-    <h5 class="border-top pt-5"><b><%= t(:women, scope: 'pages.home.footer').html_safe %></b></h5>
-
-    <nav class="border-vertical py-2 my-5">
-      <%= t(:twitter, scope: 'pages.home.footer').html_safe %> |
-      <!-- Make sure cookie consent is given -->
-      <% if cookies[:cookie_consent].blank? %>
-        <button type="button" class="btn btn-link px-2" data-toggle="modal" data-target="#contactHint">
-          <%= t(:contact_link, scope: 'pages.home.footer') %>
-        </button> |
-      <% else %>
-        <%= link_to t(:contact_link, scope: 'pages.home.footer'), contact_path, class:"btn btn-link px-2" %> |
-      <% end %>
-      <%= link_to t(:about_title, scope: 'pages.home.footer'), about_path, class: "btn btn-link px-2" %> |
-      <%= link_to t(:faq, scope: 'pages.home.footer'), faq_path, class: "btn btn-link px-2"  %> |
-      <%= t(:github, scope: 'pages.home.footer').html_safe %> |
-      <%= link_to t(:title, scope: 'pages.imprint'), impressum_path, class:"btn btn-link px-2" %> |
-      <%= link_to t(:privacy, scope: 'pages.imprint'), privacy_path, class:"btn btn-link px-2" %>
-    </nav>
-    <p>
-    <span class="">Supported by:</span>
-    <%= link_to(image_tag('kombuese_logo.jpg', class:'pl-3', style: "width: 200px"), "https://www.kombuese.org/", class: "",target: 'blank' ) %>
-    <%= link_to(image_tag('inspired_logo.jpg', class:'pl-3', style: "width: 200px"), "https://www.inspired-socialmedia.com/", class: "",target: 'blank' ) %>
-    </p>
+    <div class="row mt-2">
+      <div class="col-12 col-md-6 pb-3 order-last order-md-first">
+        <span class=""><%=t(:supported_by, scope: 'pages.footer').html_safe%></span>
+        <%= link_to(image_tag('kombuese_logo.png', class:'pl-sm-3', style: "width: 150px"), "https://www.kombuese.org/", class: "noHover",target: 'blank' ) %>
+      </div>
+      <div class="col-12 col-md-2">
+        <ul class="list-unstyled">
+          <li class="d-flex">
+            <%= link_to t(:about, scope: 'pages.home'), about_path, class: "" %>
+          </li>
+          <li class="d-flex">
+            <%= link_to t(:faq, scope: 'pages.home'), faq_path, class: ""  %>
+          </li>
+          <li class="d-flex">
+            <%= link_to t(:code_of_conduct, scope: 'pages.home'), code_of_conduct_path, class: ""  %>
+          </li>
+        </ul>
+      </div>
+      <div class="col-12 col-md-2">
+        <ul class="list-unstyled">
+          <li class="d-flex">
+            <%= t(:twitter, scope: 'pages.footer').html_safe %>
+          </li>
+          <li class="d-flex">
+            <%= t(:instagram, scope: 'pages.footer').html_safe %>
+          </li>
+          <li class="d-flex">
+            <%= t(:facebook, scope: 'pages.footer').html_safe %>
+          </li>
+        </ul>
+      </div>
+      <div class="col-12 col-md-2">
+        <ul class="list-unstyled">
+          <li class="d-flex">
+        <!-- Make sure cookie consent is given -->
+            <% if cookies[:cookie_consent].blank? %>
+              <button type="button" class="btn btn-link px-2 pt-0" data-toggle="modal" data-target="#contactHint">
+                <%= t(:contact, scope: 'pages.footer') %>
+              </button>
+            <% else %>
+              <%= link_to t(:contact, scope: 'pages.footer'), contact_path, class: "" %>
+            <% end %>
+          </li>
+          <li class="d-flex">
+            <%= link_to t(:imprint, scope: 'pages.footer'), impressum_path, class: ""%>
+          </li>
+          <li class="d-flex">
+            <%= link_to t(:privacy, scope: 'pages.footer'), privacy_path, class: "" %>
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
-</section>
+</footer>

@@ -125,7 +125,7 @@ RSpec.describe 'Navigation', type: :system do
           expect(page).to have_content('algorithm')
           expect(page).to have_content('English')
           expect(page).to have_content('German')
-          expect(page).to have_link('Ada and the computer', href: 'www.adalovelace.de')
+          expect(page).to have_link('Ada and the computer', href: 'https://www.adalovelace.de')
           expect(page).to have_content('How to programm')
         end
       end
@@ -150,9 +150,9 @@ RSpec.describe 'Navigation', type: :system do
           expect(page).to have_css('div.profile_topic_list')
           expect(page).to have_css('form label', text: 'country')
           expect(page).to have_css('form label', text: 'picture')
-          expect(page).to have_css('form label', text: 'My main focus in German')
+          expect(page).to have_css('form label', text: 'Main focus in German')
           expect(page).to have_css('form label', text: 'My bio in German')
-          expect(page).to have_css('form label', text: 'My main focus in English')
+          expect(page).to have_css('form label', text: 'Main focus in English')
           expect(page).to have_css('form label', text: 'My bio in English')
         end
       end

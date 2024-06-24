@@ -89,8 +89,17 @@ $bwb-gradient-dark: 135deg,
 
 .the-badge {
 	min-width: 250px;
-	max-width: 300px;
+	max-width: 350px;
 	text-align: center;
+
+	img {
+		max-width: 100%;
+		max-height: 100%;
+	}
+
+	a {
+		text-decoration: none;
+	}
 }
 
 .image-only-container {

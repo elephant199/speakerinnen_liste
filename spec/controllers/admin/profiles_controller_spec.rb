@@ -17,8 +17,8 @@ describe Admin::ProfilesController, type: :controller do
   describe 'GET index' do
     before(:each) do
       sign_in admin
-      @profile = FactoryBot.create(:admin, firstname: 'Awe')
-      @profile1 = FactoryBot.create(:admin, firstname: 'NotInc')
+      @profile = FactoryBot.create(:profile, firstname: 'Awe', published: true)
+      @profile1 = FactoryBot.create(:profile, firstname: 'NotInc', published: true)
     end
 
     describe 'when search param is provided' do
@@ -33,7 +33,7 @@ describe Admin::ProfilesController, type: :controller do
       end
 
       it 'should contain queried results' do
-        expect(assigns(:profiles)).to_not include(@profile1)
+        expect(assigns(:records)).to_not include(@profile1)
       end
     end
 
@@ -49,8 +49,7 @@ describe Admin::ProfilesController, type: :controller do
       end
 
       it 'should contain all results' do
-        expect(assigns(:profiles)).to include(@profile)
-        expect(assigns(:profiles)).to include(@profile1)
+        expect(assigns(:records).count).to eq 4
       end
     end
   end
@@ -114,6 +113,32 @@ describe Admin::ProfilesController, type: :controller do
       specify { expect(response.status).to eq 302 }
       specify { expect(response).to_not render_template(:edit) }
       specify { expect(response).to redirect_to("/#{I18n.locale}/profiles") }
+    end
+  end
+
+  describe 'PUT admin_update' do
+    before(:each) do
+      sign_in admin
+    end
+
+    it 'redirects to same page in profiles list' do
+      put :admin_update, params: { id: non_admin.id, profile: { admin_comment: "this is a comment" }, page: 2 }
+      expect(response).to redirect_to("/#{I18n.locale}/admin/profiles?page=2")
+    end
+
+    it 'redirects to first page in profiles list' do
+      put :admin_update, params: { id: non_admin.id, profile: { admin_comment: "this is a comment" } }
+      expect(response).to redirect_to("/#{I18n.locale}/admin/profiles")
+    end
+
+    it 'redirects to profile view page' do
+      put :admin_update, params: { id: non_admin.id, profile: { admin_comment: "this is a comment" }, page: 'show' }
+      expect(response).to redirect_to("/#{I18n.locale}/admin/profiles/#{non_admin.slug}")
+    end
+
+    it 'redirects to profile edit page' do
+      put :admin_update, params: { id: non_admin.id, profile: { admin_comment: "this is a comment" }, page: 'edit' }
+      expect(response).to redirect_to("/#{I18n.locale}/admin/profiles/#{non_admin.slug}/edit")
     end
   end
 

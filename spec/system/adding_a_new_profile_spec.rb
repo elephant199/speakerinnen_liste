@@ -6,12 +6,12 @@ describe 'profile adding' do
     visit root_path
     page.driver.browser.set_cookie("cookie_consent=true")
 
-    click_link I18n.t(:signup, scope: 'layouts.application')
+    click_link I18n.t(:signup, scope: 'layouts.application'), match: :first
     fill_in 'E-Mail', with: 'test@test.de'
     fill_in 'profile_password', with: '12345678'
     fill_in 'profile_password_confirmation', with: '12345678'
     click_button I18n.t(:signup, scope: 'devise.registrations')
-    expect(page).to have_css('div.alert-info', text: I18n.t(:signed_up_but_unconfirmed, scope: 'devise.registrations'))
+    expect(page).to have_css('div.alert', text: I18n.t(:signed_up_but_unconfirmed, scope: 'devise.registrations'))
     Profile.last.confirm
 
     click_link I18n.t(:login, scope: 'layouts.application')

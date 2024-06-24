@@ -72,11 +72,11 @@ end
                   lastname: "Miller##{i}",
                   email: "claire_miller#{i}@example.com",
                   password: "claire_miller",
+
                   city_en: "London",
                   country: 'GB',
-                  twitter_en: "@clairemiller##{i}",
+                  twitter_en: "@karensmith",
                   website_en: "https://speakerinnen.org",
-                  website_de: "wwww.heise.de",
                   website_2_en: "www.guardian.com",
                   confirmed_at: DateTime.now,
                   published: true,
@@ -184,3 +184,61 @@ Feature.create(position:1, public: true, title: "Climatejustice", description: "
 Feature.last.profiles=Profile.order("RANDOM()").limit(8).to_a
 
 puts "1 feature with 8 profiles where created"
+                  admin: true,
+                  main_topic_en: "Human Rights",
+                  iso_languages: ['en','de'],
+                  bio_de: "<b>Clara Helene Immerwahr</b> verh. Clara Haber (* 21. Juni 1870 in Polkendorf bei Breslau;[1]<br>
+                          † 2. Mai 1915 in Dahlem bei Berlin) war eine deutsche Chemikerin.<br>
+                            Als sie 1900 an der Universität Breslau promovierte, war <i>sie erst die zweite Frau, </i<
+                            die in Deutschland einen Doktorgrad in Chemie erwarb.
+                            Wissenschaftlich arbeitete sie im damals neuen Feld der physikalischen Chemie. <br>
+                            Nach einem Jahr Berufstätigkeit am chemischen Institut ihres Doktorvaters Richard Abegg in Breslau
+                            heiratete sie 1901 den späteren Nobelpreisträger Fritz Haber und musste ihren Beruf aufgeben.
+                            Die Ehe verlief unglücklich, insbesondere nach der Geburt ihres Sohnes 1902.
+                            Im Jahr 1915 nahm sich Clara Haber das Leben."
+    )
+
+    puts "1 admin profile created"
+
+    Feature.create(position:1, public: true, title: "Climatejustice", description: "how the poor pay for the rich")
+    Feature.last.profiles=Profile.order("RANDOM()").limit(8).to_a
+
+    puts "1 feature with 8 profiles where created"
+  end
+
+  def create_tags_with_one_language(lang)
+    for i in 0...@categories.length do 
+      category = Category.find_by(name: @categories[i][:name_en])
+      language = LocaleLanguage.find_by(iso_code: lang)
+      tag_1 = ActsAsTaggableOn::Tag.create(name: @tags[lang][i*2-1])
+      tag_1.categories << category
+      tag_1.locale_languages << language
+      tags_2 = ActsAsTaggableOn::Tag.create(name: @tags[lang][i*2])
+      tags_2.categories << category
+      tags_2.locale_languages << language
+      #TODO: assign some tags to more then 1 category
+    end
+  end
+
+  def build_tags_for_profile(i, lang)
+    tags_bank = @tags[lang]
+    selected_tags = []
+    j = i % 10
+    k = (i % 10) + 10
+    if i % 2 == 0
+      8.times do
+        selected_tags << tags_bank[j]
+        j = j + 1
+      end
+    else
+      7.times do
+        selected_tags << tags_bank[k]
+        k = k + 1
+        break if k >= tags_bank.length
+      end
+    end
+    selected_tags
+  end
+end
+
+Seeds.new.run

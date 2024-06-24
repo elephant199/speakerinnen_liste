@@ -21,7 +21,7 @@ class Admin::TagsController < Admin::BaseController
       redirect_to admin_tags_path(filter_params_from_session.merge(anchor: "tag_#{@tag.id}")),
                   notice: "'#{@tag.name}' was merged with the tag '#{existing_tag.name}' ."
     elsif
-      @tag.update_attributes(tag_params)
+      @tag.update(tag_params)
       set_tag_languages(params[:tag][:languages])
       set_tag_categories(params[:tag][:categories])
       redirect_to admin_tags_path(filter_params_from_session.merge(anchor: "tag_#{@tag.id}")),
@@ -40,11 +40,12 @@ class Admin::TagsController < Admin::BaseController
   def index
     @categories = Category.all.includes(:translations)
     @tags_count = ActsAsTaggableOn::Tag.count
-    @tags = TagFilter.new(ActsAsTaggableOn::Tag.all.includes(:tags_locale_languages, :actsastaggableon_tags_categories, :taggings), filter_params)
-                     .filter
-                     .order(sort_column + ' ' + sort_direction)
-                     .page(params[:page])
-                     .per(20)
+    @pagy, @records = pagy(
+      TagFilter
+        .new(ActsAsTaggableOn::Tag.all.includes(:tags_locale_languages, :actsastaggableon_tags_categories, :taggings), filter_params)
+        .filter
+        .order(sort_column + ' ' + sort_direction)
+      )
     session[:filter_params] = filter_params
   end
 

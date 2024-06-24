@@ -1,18 +1,16 @@
 Rails.application.routes.draw do
 
-  # for production I have to add devise routes here
+  # for production devise routes
   devise_for :profiles,
-              only: :omniauth_callbacks,
               controllers: {
-                omniauth_callbacks: :omniauth_callbacks,
                 confirmations: :confirmations,
                 registrations: :registrations
               }
 
   scope '(:locale)', locale: /en|de/ do
-    
+
     delete 'image/:id/destroy', to: 'image#destroy', as: 'image'
-    
+
     namespace :admin do
       resources :tags, except: [:new, :create] do
         collection do
@@ -51,16 +49,7 @@ Rails.application.routes.draw do
       end
     end
 
-  # for localhost I have to add devise routes here
-    devise_for :profiles,
-      skip: :omniauth_callbacks,
-      controllers: {
-        omniauth_callbacks: :omniauth_callbacks,
-        confirmations: :confirmations,
-        registrations: :registrations
-      }
 
-    get 'topics', to: 'profiles#index', as: :topic
 
     get 'profiles_typeahead' => 'profiles#typeahead'
 
@@ -73,10 +62,18 @@ Rails.application.routes.draw do
     get 'links' => 'pages#links'
     get 'faq' => 'pages#faq'
     get 'press' => 'pages#press'
+    get 'code_of_conduct' => 'pages#code_of_conduct'
+    get 'about_vorarlberg' => 'pages#about_vorarlberg'
+    get 'about_ooe' => 'pages#about_ooe'
+    get 'frauentag2023' => 'pages#frauentag_2023'
 
     get '/', to: 'pages#home'
 
     get 'categories/:category_id', to: 'profiles#index', as: :category
+
+    get '/404', to: "errors#not_found"
+    get '/422', to: "errors#unacceptable"
+    get '/500', to: "errors#internal_error"
 
     resources :profiles, except: [:new, :create] do
       resources :medialinks

@@ -6,11 +6,24 @@ class Admin::ProfilesController < Admin::BaseController
   before_action :set_profile, only: %i[show edit update destroy publish unpublish admin_update]
 
   def index
-    @profiles = if params[:search]
-                  Profile.is_confirmed.admin_search(params[:search]).order('profiles.created_at DESC').page(params[:page]).per(100)
-                else
-                  Profile.is_confirmed.order(sort_column + ' ' + sort_direction).order('created_at DESC').page(params[:page]).per(100)
-                end
+    @pagy, @records =
+      if params[:search]
+        pagy(
+          Profile
+            .is_confirmed
+            .admin_search(params[:search])
+            .order('created_at DESC'),
+          items: 100
+        )
+      else
+        pagy(
+          Profile
+            .is_confirmed
+            .order(sort_column + ' ' + sort_direction)
+            .order('created_at DESC'),
+          items: 100
+        )
+      end
   end
 
   def new; end
@@ -27,7 +40,7 @@ class Admin::ProfilesController < Admin::BaseController
   end
 
   def update
-    if @profile.update_attributes(profile_params)
+    if @profile.update(profile_params)
       redirect_to admin_profile_path(@profile), notice: I18n.t('flash.profiles.updated', profile_name: @profile.name_or_email)
     else
       render :edit
@@ -60,9 +73,13 @@ class Admin::ProfilesController < Admin::BaseController
   def admin_update
     redirects = {show: admin_profile_path(@profile), edit: edit_admin_profile_path(@profile)}
 
-    if @profile.update_attributes(profile_params)
+    if @profile.update(profile_params)
       if params[:page].present?
-        redirect_to redirects[params[:page].to_sym], notice: I18n.t('flash.comment.updated')
+        if /^[0-9]+$/.match("#{params[:page]}")
+          redirect_to "#{admin_profiles_path}?page=#{params[:page]}", notice: I18n.t('flash.profiles.updated', profile_name: @profile.name_or_email)
+        else
+          redirect_to redirects[params[:page].to_sym], notice: I18n.t('flash.comment.updated')
+        end
       else
         redirect_to admin_profiles_path, notice: I18n.t('flash.profiles.updated', profile_name: @profile.name_or_email)
       end
@@ -86,6 +103,7 @@ class Admin::ProfilesController < Admin::BaseController
       :password_confirmation,
       :remember_me,
       :country,
+      :state,
       { iso_languages: [] },
       :firstname,
       :lastname,
@@ -111,7 +129,14 @@ class Admin::ProfilesController < Admin::BaseController
       :city_de,
       :city_en,
       :image,
+      :copyright,
+      :personal_note_de,
+      :personal_note_en,
+      :willing_to_travel,
+      :nonprofit,
+      :inactive,
       feature_ids: [],
+      service_ids: [],
       translations_attributes: %i[id bio main_topic twitter website website_2 website_3 profession city locale]
     )
   end

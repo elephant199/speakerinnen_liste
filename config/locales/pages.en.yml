@@ -1,14 +1,45 @@
 en:
   pages:
+    header:
+      about_speakerinnen_list: "About us"
     home:
-      search:
-        heading: "Organizers, find your speakers"
-        tagline_html: "Find women speakers & moderators for your conference."
-        search_text: "Search by name or topic"
-        search: "Search"
-      all_categories: "Categories and topics >>"
-      all_speakers: "All women speakers >>"
-      hint: "Hint"
+      heading: "Organizers, find your speakers"
+      heading_vorarlberg: "Organizers, find your speakers"
+      heading_ooe: "Organizers, find your speakers"
+      tagline: "Find women speakers & moderators for your conference"
+      tagline_vorarlberg: "Find women experts, speakers & professionals in Vorarlberg"
+      tagline_ooe: "Find women experts, speakers & moderators in Upper Austria"
+      search_placeholder: "Name or topic"
+      search_speaker: "Find your speaker"
+      search_speaker_vorarlberg: "Find your expert"
+      search_speaker_ooe: "Find your expert"
+      sub_menu_right_title: "Fifty Percent"
+      sub_menu_right_title_vorarlberg: "About the project"
+      sub_menu_right_title_ooe: "About the project"
+      sub_menu_right_text: "Men or women - who is on stage more often?"
+      sub_menu_rigth_text_vorarlberg: "Learn more about us and this project."
+      sub_menu_rigth_text_ooe: "Learn more about us and this project."
+      sub_menu_right_link: "<a href='https://50prozent.speakerinnen.org/', class='stretched-link', target='_blank'>Go to Fifty Percent >></a>"
+      sub_menu_right_link_vorarlberg: "<a href='en/about_vorarlberg', class='stretched-link', target='_blank'>About us >></a>"
+      sub_menu_right_link_ooe: "<a href='en/about_ooe', class='stretched-link', target='_blank'>About us >></a>"
+      sub_menu_middle_title: "Our blog"
+      sub_menu_middle_title_vorarlberg: "Extended search"
+      sub_menu_middle_title_ooe: "Extended search"
+      sub_menu_middle_text: "Find exciting interviews and lots of news."
+      sub_menu_middle_text_vorarlberg: "No female expert from Vorarlberg found? Expand your search to the German-speaking area."
+      sub_menu_middle_text_ooe: "No female expert from Upper Austria found? Expand your search to the German-speaking area."
+      sub_menu_middle_link: "<a href='https://blog.speakerinnen.org', class='stretched-link', target='_blank'>Go to our Blog >></a>"
+      sub_menu_middle_link_vorarlberg: "<a href='https://speakerinnen.org/en', class='stretched-link', target='_blank'>Go to speakerinnen.org >></a>"
+      sub_menu_middle_link_ooe: "<a href='https://speakerinnen.org/en', class='stretched-link', target='_blank'>Go to speakerinnen.org >></a>"
+      sub_menu_left_title: "Get inspired"
+      sub_menu_left_title_vorarlberg: "All female experts"
+      sub_menu_left_title_ooe: "All female experts"
+      sub_menu_left_text: "Find the right women speaker in 10 categories."
+      sub_menu_left_text_vorarlberg: "Make female competence visible in Vorarlberg."
+      sub_menu_left_text_ooe: "Make female competence visible in Upper Austria."
+      sub_menu_left_link: "<a href='#categories_anchor', class='stretched-link'>Go to the Category Search >></a>"
+      sub_menu_left_link_vorarlberg: "<a href='en/profiles#speakers_anchor', class='stretched-link'>Go to all female experts >></a>"
+      sub_menu_left_link_ooe: "<a href='en/profiles#speakers_anchor', class='stretched-link'>Go to all female experts >></a>"
       auth_modal: "You have to <b>agree to the use of cookies</b> before using the register or login form.<br>
        Find more information about data security in our <a href='%{link}' class='link'>privacy policy</a>.<br>"
       contact_modal: "You have to <b>agree to the use of cookies</b>. before using the contact form.<br>
@@ -17,66 +48,77 @@ en:
       we remember and store information about how you use it."
       cookie_consent_detail: "This is done using simple text files called cookies which sit on your computer. These cookies are completely safe and secure and will never contain any sensitive information. Important: To use the full functionality of this site (e.g. login, registration and sending mail to the speakers) you have to agree to the use of cookies. For web statistics we use Matomoto which also uses cookies. These can be deactivated separately. Find more information about data security in our <a href='%{link}' class='link'>privacy policy</a>."
       allow_cookies: "I agree"
-      description: "Browse by categories"
-      description_text: "We feel strongly about a balanced representation of men and women* on stage. We encourage women to become more visible in their profession and field of expertise."
-      speaker_shoutout: "Do you have something interesting to say?"
-      speaker_text: "Get on the Speakerinnen* list >>"
-      speakers:
-        speaker_headline: "Our Speakers*"
-        speaker_text: "No more excuses for panels without women*!"
-        speaker_index: "Browse all speakers >>"
-        categories: "Categories and Topics >>"
-      mission_statement:
-        heading: "Our Vision"
-        content: "<p>We believe that women speakers should be easier to find for event organizers.</p><p>We believe that event organizers should have the best speakers at their events, regardless of the speakers’ gender identification.</p><p>We believe in collaboration and not competition, so we encourage our speakers and event organizers to support each other and help speakers speak better.</p>"
-      quote: "We believe in collaboration — not competition"
-      quote_text: "So we encourage our speakers and event organizers to support each other and help speakers to improve their performance."
-      footer:
-        about_title: "About us"
-        about: |
-              Speakerinnen.org aims to increase the visibility and participation of women* at (but not limited to) conferences, panels and talk shows.<br>
-              Organizers and hosts can find experts, who gladly (and competently) share their knowledge. <br>
-              women can register in our database with the topics they are interested in covering, and can add references to their abilities.
-        more: ">> more"
-        railsgirls: |
-              8 women supported by 4 coaches coded this web application as a Rails Girls Berlin learning project.<br><br>
-              <a href='http://railsgirlsberlin.de', target='_blank'>Rails Girls</a> is an international not-for-profit group that aims to get women into programming
-              with workshops, scholarships, and a safe learning community.
-        press: "Media Coverage"
-        blog: "Our blog"
-        faq: "FAQs"
-        links: "Links"
-        links_text: "Here you find links to similar projects:"
-        more: ">> more"
-        contact: "Contact"
-        contact_link: "Email"
-        twitter: "<a href='https://twitter.com/speakerinnen', target='_blank', class='pv-'>Twitter</a>"
-        github: "<a href='https://github.com/rubymonsters/speakerinnen_liste' target='_blank', class='pv-'>GitHub</a>"
-        devblog: "<a href='http://speakerinnen.wordpress.com/', target='_blank>Developer Blog</a>"
-        faq_short: |
-                <strong>Why is there no speaker for the topic I am looking for?</strong><br>
-                Possibly, nobody has created a tag for this topic yet. As soon as a speaker names this topic as one of her tags, this topic becomes visible as a tag within the topic range.<br>
-                <br><strong>Can anybody join in?</strong><br>
-                Yes.
-        press_short: |
-            <strong>Speakerinnen.org verhilft zu Expertise auf der Bühne</strong><br>
-            <a href="https://www.focus.de/digital/computer/technik-speakerinnen-org-verhilft-zu-expertise-auf-der-buehne_id_6004519.html" target="_blank" rel="noopener">Focus (German)</a>
-            <br><br>
-            <strong>Rauf auf die Podien: Weibliche Redner sind immer noch selten</strong><br>
-            <a href="https://www.sueddeutsche.de/news/karriere/arbeit-rauf-auf-die-podien-weibliche-redner-sind-immer-noch-selten-dpa.urn-newsml-dpa-com-20090101-160302-99-61792" target="_blank" rel="noopener">Süddeutsche Zeitung (German)</a>
-            <br><br>
-            <strong>Die Hälfte der Macht den Speakerinnen</strong><br>
-            <a href="https://newthinking.de/de/haelfte-macht-den-speakerinnen" target="_blank" rel="noopener">Newthinking Blog (German)</a>
-            <br><br>
-            <strong>Nicht mehr allein unter Männern</strong><br>
-            <a href="https://www.taz.de/!5043737/" target="_blank" rel="noopener">taz (German)</a>
-            <br><br>
-
-        women: "* When we say women we mean everyone who defines herself as a woman. Please note: Sometimes for better readability in long passages of text the term 'women' is written without a star."
-    about:
-      title: "About us"
-    press:
-      title: "Press about us"
-    imprint:
-      title: "Legal Details"
+      speakerinnen: "Speakers"
+      category_search_title: "Search more targeted!"
+      category_search_title_vorarlberg: "Search more targeted!"
+      category_search_title_ooe: "Search more targeted!"
+      category_search_text: "Find your women speakers in 10 categories or filter by specific topics:"
+      category_search_text_vorarlberg: "Find your women experts in 10 categories or filter by specific topics:"
+      category_search_text_ooe: "Find your women experts in 10 categories or filter by specific topics:"
+      get_inspired: "Get inspired!"
+      get_inspired_text: "Here you can find %{count_profiles} women speakers in %{count_topics} topics"
+      get_inspired_button: "Search"
+      welcome_title: "Speakerinnen"
+      welcome_title_vorarlberg: "Welcome!"
+      welcome_title_ooe: "Welcome!"
+      welcome_text: "Welcome aboard! Here you can find our latest registrations"
+      welcome_text_vorarlberg: "Here you can find our latest registrations."
+      welcome_text_ooe: "Our newcomers from Upper Austria"
+      intro_title_vorarlberg: "We make female experts visible."
+      intro_text_vorarlberg: |
+        <p>
+          vorarlberg.speakerinnen.org is a project to prevent "manels",
+          i.e. podiums, committees or panels that are predominantly occupied by men.
+          Through the cooperation with <a href='https://speakerinnen.org', target='_blank'>speakerinnen.org</a>
+          Vorarlberg women* become visible as experts, speakers and representatives of this region.
+          They can be found both locally and internationally.
+        </p>
+        <p>
+          The project is made possible by the <a href='https://vorarlberg.at/frauen', target='_blank'>Funktionsbereich Frauen und Gleichstellung</a>
+          im Amt der Vorarlberger Landesregierung and the <a href='https://www.vorarlberg-chancenreich.at/', target='_blank'>Marke Vorarlberg</a>.
+        </p>
+        <p>
+          More information about us can be found <a href="/about_vorarlberg">here</a>.
+        </p>
+      intro_title_ooe: "We make female experts visible."
+      intro_text_ooe: |
+        <p>
+          Podiums are frequently occupied largely by men. It is time for women to become
+          active in order to change this. Via the platform ooe.speakerinnen.org, Upper
+          Austrian women are made visible both locally and internationally as experts,
+          speakers and ambassadors.
+        </p>
+      about: "About us"
+      faq: "FAQ"
+      code_of_conduct: "Code of Conduct"
+      special_doctors_title: "For Women's Day: Women doctors on stage!"
+      special_doctors_intro: 'Women doctors of all disciplines - register now as a speaker!'
+      special_doctors_details: <a href="/de/frauentag2023">All information about the campaign</a>
+      special_doctors_register:
+        title: <b>You are a doctor?</b>
+        text: <p>Register now to be found as an expert.</p>
+        button: Register as a speaker
+    footer:
+      contact: "Contact"
+      imprint: "Legal Details"
       privacy: "Privacy Policy"
+      supported_by: "Supported by:"
+      twitter: "<a href='https://twitter.com/speakerinnen', target='_blank', class='pv-'>Twitter</a>"
+      instagram: "<a href='https://instagram.com/speakerinnen', target='_blank', class=''>Instagram</a>"
+      facebook: "<a href='https://facebook.com/speakerinnen', target='_blank', class=''>Facebook</a>"
+      caption_vorarlberg: |
+        vorarlberg.speakerinnen.org makes Vorarlberg #chancenreich<br>
+        <a href="https://www.facebook.com/MarkeVorarlberg/", target="_blank">Facebook: @markevorarlberg</a><br>
+        <a href="https://www.instagram.com/marke_vorarlberg/?hl=de", target="_blank">Instagram: @marke_vorarlberg</a>
+      caption_gleichstellung: |
+        vorarlberg.speakerinnen.org is supported by
+        <a href="https://vorarlberg.at/frauen", target="_blank">Funktionsbereich Frauen und Gleichstellung</a>
+        im Amt der Vorarlberger Landesregierung.
+    errors:
+      not_found: "The page you were looking for doesn't exist."
+      not_found_explain: "You may have mistyped the address or the page may have moved."
+      unacceptable: "The change you wanted was rejected."
+      unacceptable_explain: "Maybe you tried to change something you didn't have access to."
+      internal: "We're sorry, but something went wrong."
+      back_home: "Go back home: "
+      home_link: "Speakerinnen Liste"
